@@ -1,0 +1,4 @@
+docker service ls
+
+#Swarm This command works with the Swarm orchestrator.
+
