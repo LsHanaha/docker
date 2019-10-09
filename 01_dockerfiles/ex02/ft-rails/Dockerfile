@@ -1,19 +1,18 @@
-FROM ruby:latest
+FROM ruby:2.6.3
 
-RUN apt-get update -qq && apt-get install -y apt-utils libpq-dev build-essential nodejs sqlite3
-RUN gem update && gem install rails
+ENV PACKAGES="apt-utils libpq-dev build-essential nodejs sqlite3 yarn npm"
+
+RUN apt-get update -qq && \
+    apt-get install -y $PACKAGES
 
 RUN mkdir -p /opt/app
-
-
-COPY Gemfile /opt/app/Gemfile
-COPY Gemfile.lock /opt/app/Gemfile.lock
 WORKDIR /opt/app
-COPY app /opt/app
 
-
-
+COPY app/Gemfile Gemfile
+COPY app/Gemfile.lock Gemfile.lock
 RUN bundle install
-RUN rake db:migrate
-RUN rake db:setup
 
+ADD app .
+
+RUN rails db:create && \
+    rails db:migrate
