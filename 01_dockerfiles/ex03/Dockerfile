@@ -11,4 +11,4 @@ EXPOSE 80 443 22
 
 ENTRYPOINT (/opt/gitlab/embedded/bin/runsvdir-start &) && gitlab-ctl reconfigure && tail -f /dev/null
 
-# 
+# TODO remove tail -f /dev/null
