@@ -16,3 +16,5 @@ ADD app .
 
 RUN rails db:create && \
     rails db:migrate
+
+# docker build -t ft-rails:on-build .
