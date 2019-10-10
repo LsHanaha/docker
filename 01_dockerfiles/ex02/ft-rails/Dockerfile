@@ -1,6 +1,6 @@
 FROM ruby:2.6.3
 
-ENV PACKAGES="apt-utils libpq-dev build-essential nodejs sqlite3 yarn npm"
+ENV PACKAGES="apt-utils libpq-dev build-essential nodejs sqlite3 yarn" 
 
 RUN apt-get update -qq && \
     apt-get install -y $PACKAGES
