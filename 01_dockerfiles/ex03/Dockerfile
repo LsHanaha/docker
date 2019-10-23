@@ -12,3 +12,4 @@ EXPOSE 80 443 22
 ENTRYPOINT (/opt/gitlab/embedded/bin/runsvdir-start &) && gitlab-ctl reconfigure && tail -f /dev/null
 
 # TODO remove tail -f /dev/null
+# docker run -p 80:80 -p 443:443 -p 22:22 -d cicd
