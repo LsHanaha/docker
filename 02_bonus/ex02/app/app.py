@@ -21,5 +21,8 @@ def get_hit_count():
 
 @app.route('/')
 def hello():
-    count = get_hit_count()
+    try:
+        count = get_hit_count()
+    except redis.exceptions.ConnectionError:
+        count = 123
     return f"Hello world! I have been seen {count} times.\n"
