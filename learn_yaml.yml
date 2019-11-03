@@ -1,0 +1,40 @@
+# sdfghj
+person:
+  name: &name "kirill" # & - name of the ancor
+  occupation: 'programmer'
+  age: !!float 26 # приведение типов - делаем число флотом
+  gpa: !!str 4.2 # now its string, not float
+  fav_num: 1e+10
+  male: true
+  birthday: 1993-06-26 14:00:00
+  flaws: null
+  hobbies: # list of items '-' - mean that it's a value from list
+    - c
+    - movies
+    - snowboarding
+  movies: ["Dark Knight", "Golden Boy"] # list too
+  friends: # ways to save list of hash maps
+  - name: "Dima"
+    age: 26
+  - {name: "Adam", age: 33}
+  -
+    name: "qwe"
+    age: 50
+  description: > # thist all is a single line
+    tywvfdhebfkjdsbjkadsbnv kjansvsdagasg
+    dsaiojgfdasigjkldsajg
+    sdgkjdsagjkds asdfsadf sdagsad gasd
+    sdgdsg cbxbvcbhdf rtew bdfsbdfsb cvbc 
+  signature: | # save values in given format
+    Me
+    qweqwe
+    mail - mail@mail.com
+  id: *name # get the value of the ancor
+
+  base: &base
+    var1: val1
+
+  foo: 
+    <<: *base # add pair key-value from the ancor &base as key: value
+
+  
