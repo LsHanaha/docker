@@ -1,0 +1,7 @@
+docker run -p 5432:5432 -e POSTGRES_PASSWORD=password --name pg_pg -d  postgres
+
+docker run -p 5555:80 --name pg_admin -e PGADMIN_DEFAULT_EMAIL="nother" -e PGADMIN_DEFAULT_PASSWORD="password"  dpage/pgadmin4
+
+servers->create->server
+change name for db, in connection write host ip, and write pass + username.
+then connect

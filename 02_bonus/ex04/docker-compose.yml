@@ -12,4 +12,15 @@ services:
       - "5001:5000"
     restart: always
     command: python app.py
-  # proxy:
+
+  proxy:
+    container_name: nginx_app
+    image: "nginx:stable"
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    env_file:
+      - .env
+    links:       
+      - web
