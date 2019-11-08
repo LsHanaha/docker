@@ -5,3 +5,15 @@ docker run -p 5555:80 --name pg_admin -e PGADMIN_DEFAULT_EMAIL="nother" -e PGADM
 servers->create->server
 change name for db, in connection write host ip, and write pass + username.
 then connect
+
+
+создание бд:
+pg_dump -U user_name -h host database -s -t table_or_view_names -f table_or_view_names.sql
+pg_dump -U elon -h localhost -s -t spacex -t tesla -t solarcity -t boring > companies.sql
+
+разворачивание бд:
+psql -v ON_ERROR_STOP=1 -1 -h the.server.hostname -f my_script.sql the_database
+psql -h the.server.hostname -f my_script.sql the_database
+
+
+psql -v ON_ERROR_STOP=1 -1 -U postgres -h localhost -p 5433 -f /Users/lshanaha/Desktop/Untitled.sql student
