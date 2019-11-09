@@ -12,13 +12,13 @@ services:
     env_file:
       - .env
 
-  db_viewer:
-    image: dpage/pgadmin4
-    container_name: pg_admin
-    ports:
-      - "5555:80"
-    depends_on:
-      - db
-    env_file:
-      - .env
+  # db_viewer:
+  #   image: dpage/pgadmin4
+  #   container_name: pg_admin
+  #   ports:
+  #     - "5555:80"
+  #   depends_on:
+  #     - db
+  #   env_file:
+  #     - .env
     

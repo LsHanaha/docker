@@ -1,9 +1,9 @@
-CREATE SCHEMA test;
+CREATE SCHEMA music;
 
 CREATE  TABLE test.playlist ( 
 	id                   integer  NOT NULL ,
 	name                 text  NOT NULL ,
-	music                integer[]   ,
+	music_list           integer[]   ,
 	CONSTRAINT pk_playlist_id PRIMARY KEY ( id ),
 	CONSTRAINT unq_playlist_music UNIQUE ( music ) 
  );
