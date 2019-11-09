@@ -127,7 +127,17 @@ async def insert_track_in_playlist(request):
 @app.route("/get_playlists_for_track")
 async def get_playlists_for_track(request):
     track_name = "Ixpihgzhqdvazus"
-    
+    """
+    SELECT name
+FROM "Playlist" p
+JOIN
+	(SELECT playlist_id
+	FROM "Track" t
+	JOIN "Cord" c
+	ON t.id = c.track_id
+	WHERE name='Mxtidfypkjcovqm') p_id
+ON p.id = p_id.playlist_id
+    """
 
 
 
