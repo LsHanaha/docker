@@ -3,22 +3,35 @@ version: "3"
 services:
   db:
     restart: always
-    container_name: pg_pg
+    container_name: pg_pg123
     image: postgres:latest
-    # volumes:
-    #   - db-data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+    # ports:
+    #   - "${POSTGRES_PORT}:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     env_file:
       - .env
 
-  # db_viewer:
-  #   image: dpage/pgadmin4
-  #   container_name: pg_admin
-  #   ports:
-  #     - "5555:80"
-  #   depends_on:
-  #     - db
-  #   env_file:
-  #     - .env
-    
+
+  web:
+    restart: always
+    build: ./test_task
+    container_name: sanic_app
+    links:
+      - db
+    volumes:
+      - ./test_task:/test_task
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - DB_HOST=${DB_HOST}
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+    # command: python3 /test_task/start.py
+  

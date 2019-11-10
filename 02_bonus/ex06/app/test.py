@@ -5,14 +5,16 @@ from sanic import Sanic, response
 from sanic.response import json
 from values_check import check_url, check_name
 from values_generator import random_name, random_url
+from get_data_from_db import get_tracks, get_playlists, get_tracks_in_playlist
 import random
+import os
 
 DB_CONFIG = {
     'host': '192.168.99.102',
     'user': 'username',
     'password': 'password',
     'port': '5432',
-    'database': 'Cashwagon'
+    'database': 'postgres'
 }
 
 
@@ -26,38 +28,63 @@ def jsonify(records):
 app = Sanic(__name__)
 
 
+
+@app.route("/init")
+async def init_database():
+    tracks = await get_tracks()
+    if tracks and len(tracks) > 0:
+        return json({'posts': jsonify(tracks)})
+
+    async with app.pool.acquire() as connection:
+        for i in range(0, 100):
+            name = random_name()
+            url = random_url()
+            if check_url(url) and check_name(name):
+                print(f"Write url {url} and name {name}")
+                await connection.execute("""INSERT INTO "Track"
+                    (name, url) VALUES ($1, $2)""", name, url)
+            else:
+                print(f"Wrong url {url} or name {name}")
+    results = await get_tracks()
+    if results is not None and len(results > 0):
+        tracks = "Tracks filled succesfully\n"
+    else:
+        tracks = "There was some problems\n"
+
+
+    playlists = await get_playlists()
+    if playlists and len(playlists) > 0:
+        return json({'posts': jsonify(playlists)})
+
+    async with app.pool.acquire() as connection:
+        for i in range(0, 20):
+            name = random_name()
+            if check_name(name):
+                await connection.execute("""INSERT INTO "Playlist"
+                    (name) VALUES ($1)""", name)
+        results = await get_playlists()
+        return json({'posts': jsonify(results)})
+
+
+
+
 @app.listener('before_server_start')
 async def register_db(app, loop):
     app.pool = await create_pool(**DB_CONFIG, loop=loop, max_size=100)
 
 
-async def get_tracks():
-    async with app.pool.acquire() as connection:
-        results = await connection.fetch('''SELECT * FROM "Track"''')
-        return results
 
 
-async def get_playlists():
-    async with app.pool.acquire() as connection:
-        results = await connection.fetch('''SELECT * FROM "Playlist"''')
-        return results
 
-
-async def get_tracks_in_playlist(playlist_id):
-    async with app.pool.acquire() as connection:
-        results = await connection.fetch(f'''SELECT track_id FROM "Cord" WHERE playlist_id={playlist_id}''')
-        if not (results and len(results)):
-            return None
-        results = jsonify(results)
-        results = [list(x.values())[0] for x in results if x is not None]
-        return results
+@app.route('/', methods=['GET', 'POST'])
+async def index(request):
+    return response.text("Hello!")
 
 
 @app.route('/fill_tracks', methods=['GET', 'POST'])
 async def fill_tracks(request):
 
     tracks = await get_tracks()
-    # print(tracks)
     if tracks and len(tracks) > 0:
         return json({'posts': jsonify(tracks)})
 
@@ -127,21 +154,24 @@ async def insert_track_in_playlist(request):
 @app.route("/get_playlists_for_track")
 async def get_playlists_for_track(request):
     track_name = "Ixpihgzhqdvazus"
-    """
-    SELECT name
-FROM "Playlist" p
-JOIN
-	(SELECT playlist_id
-	FROM "Track" t
-	JOIN "Cord" c
-	ON t.id = c.track_id
-	WHERE name='Mxtidfypkjcovqm') p_id
-ON p.id = p_id.playlist_id
-    """
-
-
-
-
+    async with app.pool.acquire() as connection:
+        query = f"""
+        SELECT name
+        FROM "Playlist" p
+        JOIN
+	        (SELECT playlist_id
+	        FROM "Track" t
+	        JOIN "Cord" c
+	        ON t.id = c.track_id
+	        WHERE name='{track_name}') p_id
+        ON p.id = p_id.playlist_id
+        """
+        results = await connection.fetch(query)
+        print(results)
+        if not results:
+            return response.text("Плэйлистов с таким тректом нет.")
+        else:
+            return json({'Playlists': jsonify(results)})
 
 
 @app.route("/check_invalid_track_name")
