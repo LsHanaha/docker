@@ -28,3 +28,23 @@ async def get_tracks_in_playlist(playlist_id):
         results = jsonify(results)
         results = [list(x.values())[0] for x in results if x is not None]
         return results
+
+
+async def get_tracks_for_playlists():
+    query = \
+    """
+        SELECT n.name AS playlist, t.name AS track
+        FROM
+        (SELECT name, track_id, p.id
+            FROM public."Cord" c
+            JOIN "Playlist" p
+            ON p.id = c.playlist_id) n
+        JOIN "Track" t
+        ON t.id = n.track_id
+        ORDER BY n.id
+    """
+    print(query)
+    async with app.pool.acquire() as connection:
+        results = await connection.fetch(query)
+        return results
+

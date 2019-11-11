@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>TEST TASK</h1>
+    <h1>Trishin</h1>
+    <p>Не забудьте создать базу " psql -v ON_ERROR_STOP=1 -1 -U username -h
+        192.168.99.102 -p 5432 -f test_task.sql postgres"</p>
+    <form action="/init" method="get">
+      <button>Заполнить базу случайными значениями</button>
+    </form>
+    <form action="/tracks" method="get">
+      <button>Список треков</button>
+    </form>
+    <form action="/playlists" method="get">
+      <button>Список плейлистов</button>
+    </form>
+    <form action="/music_in_playlists" method="get">
+      <button>Список треков в плейлистах</button>
+    </form>
+
+</body>
+</html>

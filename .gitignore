@@ -1,3 +1,8 @@
 *.DS_Store
 *.pyc
 02_bonus/ex06/env/*
+02_bonus/ex06/test_task/.idea/inspectionProfiles/profiles_settings.xml
+02_bonus/ex06/test_task/.idea/misc.xml
+02_bonus/ex06/test_task/.idea/modules.xml
+02_bonus/ex06/test_task/.idea/test_task.iml
+02_bonus/ex06/test_task/.idea/vcs.xml
