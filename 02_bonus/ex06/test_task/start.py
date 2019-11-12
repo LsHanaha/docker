@@ -1,6 +1,7 @@
 from sanic import response
 from app import app
 from app.routes import init_database, tracks_list, playlists_list, tracks_in_playlists
+from app.add_to_db import add_track, add_playlist
 
 
 static_folder = './app/static/templates/'
@@ -27,6 +28,24 @@ async def menu(request):
 async def music_in_playlists(request):
     music = await tracks_in_playlists()
     return response.text(str(music))
+
+
+@app.route("/add_track", methods=['GET', 'POST'])
+async def track(request):
+    income = request.form
+    if not income:
+        return response.redirect('/')
+    ack = await add_track(income)
+    return response.text(ack)
+
+
+@app.route("/add_playlist", methods=['GET', 'POST'])
+async def playlist(request):
+    income = request.form
+    if not income:
+        return response.redirect('/')
+    ack = await add_playlist(income)
+    return response.text(ack)
 
 
 @app.route("/")

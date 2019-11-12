@@ -43,7 +43,6 @@ async def get_tracks_for_playlists():
         ON t.id = n.track_id
         ORDER BY n.id
     """
-    print(query)
     async with app.pool.acquire() as connection:
         results = await connection.fetch(query)
         return results

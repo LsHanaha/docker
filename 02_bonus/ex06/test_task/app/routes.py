@@ -5,12 +5,10 @@ from .refactor_db_answers import jsonify
 
 async def tracks_list():
     tracks = await get_tracks()
-    print('tracks_list = ', tracks)
     if tracks is None:
         ack = "Список пустой"
     else:
         tracks = jsonify(tracks)
-        print(tracks)
         ack = []
         for track in tracks:
             ack.append(' '.join([track['name'], track['url']]))
@@ -29,7 +27,6 @@ async def playlists_list():
         for playlist in playlists:
             ack.append(playlist['name'])
         ack = '\n'.join(ack)
-
     return ack
 
 
@@ -44,7 +41,6 @@ async def tracks_in_playlists():
             ack[row['playlist']] = {'tracks': [row['track']]}
         else:
             ack[row['playlist']]['tracks'].append(row['track'])
-    print(type(ack))
     dict_keys = ack.keys()
     for val in dict_keys:
         ack[val] = '\n'.join(ack[val]['tracks']) + '\n'

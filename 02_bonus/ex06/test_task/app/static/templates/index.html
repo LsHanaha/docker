@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Sanic_app</title>
 </head>
 <body>
-    <h1>TEST TASK</h1>
+    <!-- <h1>TEST TASK</h1>
     <h1>Trishin</h1>
     <p>Не забудьте создать базу " psql -v ON_ERROR_STOP=1 -1 -U username -h
-        192.168.99.102 -p 5432 -f test_task.sql postgres"</p>
+        192.168.99.102 -p 5432 -f test_task.sql postgres"</p> -->
     <form action="/init" method="get">
       <button>Заполнить базу случайными значениями</button>
     </form>
@@ -21,6 +21,27 @@
     <form action="/music_in_playlists" method="get">
       <button>Список треков в плейлистах</button>
     </form>
+    <div>Добавить трек
+    <form action="/add_track" method="post">
+      <p><input type="text" placeholder="Название" name="name"></p>
+      <p><input type="text" placeholder="Ссылка" name="url"></p>
+      <p><input type="submit" value="Отправить"></p>
+    </form>
+    </div>
+    <div>Добавить плейлист
+    <form action="/add_playlist" method="post">
+      <p><input type="text" placeholder="Название" name="name"></p>
+      <p><input type="submit" value="Отправить"></p>
+    </form>
+    </div>
+    
+    <div>
+      Поиск плейлистов
+      <form action="/playlists_with_track" method="post">
+      <p><input type="text" placeholder="Название трека" name="name"></p>
+      <p><input type="submit" value="Отправить"></p>
+    </form>
+    </div>
 
 </body>
 </html>
